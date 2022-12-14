@@ -12,13 +12,13 @@ const addTicket = async (req, res) => {
 // @access  public
 const getAllTickets = async (req, res) => {
     const apiKey = req.params.key;
-    const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const userIpx = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    console.log(`User IP: ${userIp}`);
+    // console.log(`User IP: ${userIp}`);
     const userIp = req.ip;
 
-    console.log(`User IP: ${userIp}`);
-    res.send({ msg: 'success', ip : userIp, ipx: userIp });
+    // console.log(`User IP: ${userIp}`);
+    res.send({ msg: 'success', ip : userIp, ipx: userIpx });
 }
 
 // @desc    Get a Ticket by ID
