@@ -30,8 +30,9 @@ const register = async (req, res) => {
 // @access  public
 const auth = async (req, res) => {
     try {
-        const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
+        const getIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        const ipArray = getIp.split(",")
+        ipArray[0]
         const findUser = await Customer.findOne({ username: req.body.email });
         if (!findUser) {
             return res.status(400).json({ Error: "Authentication Error", Message: "Invalid Credentials" });
