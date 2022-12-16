@@ -2,12 +2,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const connection = require('../config/dbConfig');
 const Customer = require("../models/customerModel");
+const { updateIp } = require('../utils/updateIpUtils')
+const { getIp } = require('../utils/getIpUtils')
 
 // @desc    Register customer
 // @route   GET /api/v1/register
 // @access  public
 const register = async (req, res) => {
-    const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const hash = await bcrypt.hash(req.body.password, 10);
     const newCustomer = new Customer({
         name: req.body.name,
@@ -16,7 +17,9 @@ const register = async (req, res) => {
         address: req.body.address,
         accountStatus: req.body.accountStatus,
         password: hash,
+        ip: getIp(req)
     });
+    console.log("newCustomer",newCustomer)
     try {
         const userRegister = await newCustomer.save();
         return res.status(200).json(userRegister);
@@ -30,10 +33,7 @@ const register = async (req, res) => {
 // @access  public
 const auth = async (req, res) => {
     try {
-        const getIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        const ipArray = getIp.split(",")
-        ipArray[0]
-        const findUser = await Customer.findOne({ username: req.body.email });
+        const findUser = await Customer.findOne({ email: req.body.email });
         if (!findUser) {
             return res.status(400).json({ Error: "Authentication Error", Message: "Invalid Credentials" });
         } else {
@@ -41,6 +41,7 @@ const auth = async (req, res) => {
             if (!decryptHash) {
                 return res.status(400).json({ Error: "Authentication Error", Message: "Invalid Credentials" });
             } else {
+                updateIp(req);
                 let token = jwt.sign({ email: req.body.email }, process.env.TOKEN, { expiresIn: '1h' });
                 const { password, ...others } = findUser._doc;
                 return res.status(200).json({ message: "Authentication Successful", ...others, token });

@@ -15,6 +15,11 @@ const getAllTickets = async (req, res) => {
     const getIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const ipArray = getIp.split(",");
     const ip = ipArray[0];
+    // filered ip array
+    const arr = ['123.231.104.151','116.206.246.49','123.231.104.151']
+    let uniqueChars = [...new Set(arr)];
+    console.log(uniqueChars);
+
     res.send({ ip });
 }
 

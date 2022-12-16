@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
 const ticketSchema = new mongoose.Schema({
-    customerName: {type: String, required: true},
-    customerEmail: {type: String, required: true},
-    subject: {type: String, required: true},
-    description: {type: String, required: true},
-    status: {type: String, required: true},
-    assignedTo: {type: String, required: true},
-    priority: {type: String, required: true},
-    category: {type: String, required: true},
-    subcategory: {type: String, required: true},
-    resolution: {type: String, required: true},
-    timeSpent: {type: String, required: true},
-    feedback: {type: String, required: true},
-});
+    customerName: { type: String, required: true },
+    customerEmail: { type: String, required: true , unique: true},
+    subject: { type: String, required: true },
+    description: { type: String, required: true },
+    status: { type: String, required: true },
+    assignedTo: { type: String, required: true },
+    priority: { type: String, required: true },
+    category: { type: String, required: true },
+    subcategory: { type: String, required: true },
+    resolution: { type: String, required: true },
+    timeSpent: { type: String, required: true },
+    feedback: { type: String, required: true },
+}, { timestamps: true });
 
 module.exports = mongoose.model('Ticket', ticketSchema);
 
