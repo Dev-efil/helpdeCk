@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ticketSchema = new mongoose.Schema({
     customerName: { type: String, required: true },
-    customerEmail: { type: String, required: true , unique: true},
+    customerEmail: { type: String, required: true },
     subject: { type: String, required: true },
     description: { type: String, required: true },
     status: { type: String, required: true },
@@ -23,7 +23,7 @@ module.exports = mongoose.model('Ticket', ticketSchema);
 //     "customer_email": "jane.doe@example.com",
 //     "subject": "Unable to log in to account",
 //     "description": "I am unable to log in to my account. When I enter my username and password, I receive an error message saying that the login information is incorrect. I have checked and double-checked my username and password, and I am confident that I am entering them correctly.",
-//     "status": "closed",
+//     "status": "closed, open, pending",
 //     "assigned_to": "John Smith",
 //     "date_created": "2022-12-15T12:34:56",
 //     "date_updated": "2022-12-16T10:12:01",

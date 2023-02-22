@@ -22,9 +22,9 @@ const register = async (req, res) => {
     console.log("newCustomer",newCustomer)
     try {
         const userRegister = await newCustomer.save();
-        return res.status(200).json(userRegister);
+        return res.status(201).json(userRegister);
     } catch (error) {
-        return res.status(400).send({ Error: error });
+        return res.status(400).send({ Error: "Something went wrong, Please try again" });
     }
 }
 
@@ -35,11 +35,11 @@ const auth = async (req, res) => {
     try {
         const findUser = await Customer.findOne({ email: req.body.email });
         if (!findUser) {
-            return res.status(400).json({ Error: "Authentication Error", Message: "Invalid Credentials" });
+            return res.status(400).json({ error: "Invalid Credentials" });
         } else {
             const decryptHash = await bcrypt.compare(req.body.password, findUser.password);
             if (!decryptHash) {
-                return res.status(400).json({ Error: "Authentication Error", Message: "Invalid Credentials" });
+                return res.status(400).json({ error: "Invalid Credentials" });
             } else {
                 updateIp(req);
                 let token = jwt.sign({ email: req.body.email }, process.env.TOKEN, { expiresIn: '1h' });
